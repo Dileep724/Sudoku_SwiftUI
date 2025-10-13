@@ -18,22 +18,24 @@ struct ScoreCardView: View {
     let score: String
     
     var body: some View {
-        HStack(alignment: .center) {
-//            Spacer()
+        HStack(spacing: 0) {
             Text("⭐ \(category)")
                 .font(.headline)
                 .foregroundColor(.black)
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
             Text(time)
                 .font(.headline)
                 .foregroundColor(.black)
-            Spacer()
+                .frame(width: 80, alignment: .center)
+            
             Text(score)
                 .font(.headline)
                 .foregroundColor(.black)
-//            Spacer()
+                .frame(width: 80, alignment: .trailing)
         }// HStack
-        .padding()
+        .padding(.horizontal)
+        .padding(.vertical, 15)
         .background(Color(UIColor(red: 240/255.0, green: 242/255.0, blue: 245/255.0, alpha: 1.0)))
         .cornerRadius(10)
     }

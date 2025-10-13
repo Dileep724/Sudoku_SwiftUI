@@ -8,10 +8,10 @@
 import Foundation
 
 struct individualLeaderBoard: Codable {
-    let rider_id: String
-    let category: String
-    let category_stats: [Category_Status]
-    let grand_total_points: Int
+    let rider_id: String?
+    let category: String?
+    let category_stats: [Category_Status]?
+    let grand_total_points: Int?
     let detail: String?
 }
 

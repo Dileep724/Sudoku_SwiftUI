@@ -15,7 +15,7 @@ struct MyScoreBoardView: View {
     
     @ObservedObject var themeManager = ThemeManager.shared
     @StateObject private var viewModel = IndividualScoreBoardViewModel()
-
+    
     // MARK: - View
     
     var body: some View {
@@ -33,7 +33,7 @@ struct MyScoreBoardView: View {
                     .padding(.top, 50)
                 
                 VStack(alignment: .leading, spacing: 4) {
-
+                    
                     HStack(spacing: 10) {
                         Image(systemName: "person.circle.fill")
                             .resizable()
@@ -41,13 +41,13 @@ struct MyScoreBoardView: View {
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
                             .foregroundColor(.white)
-
+                        
                         Text(viewModel.name)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                         Spacer()
-            
+                        
                     }// HStack
                     .padding([.leading, .trailing, .top, .bottom])
                     .background(Color(UIColor(red: 80/255.0, green: 9/255.0, blue: 176/255.0, alpha: 1.0)))
@@ -64,26 +64,30 @@ struct MyScoreBoardView: View {
                         }
                     )
                     
-                    HStack {
+                    HStack(spacing: 0) {
                         Text(viewModel.title1)
                             .font(.subheadline)
                             .foregroundColor(.gray)
-                        Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
                         Text(viewModel.title2)
                             .font(.subheadline)
                             .foregroundColor(.gray)
-                        Spacer()
+                            .frame(width: 80, alignment: .center)
+                        
                         Text(viewModel.title3)
                             .font(.subheadline)
                             .foregroundColor(.gray)
-                    }// HStack
-                    .padding()
-
+                            .frame(width: 80, alignment: .trailing)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    
                     Divider()
                         .background(Color.black)
                         .frame(height: 10)
                     
-                    VStack(alignment: .center, spacing: 10) {
+                    VStack() {
                         if let stats = viewModel.leaderboard?.category_stats{
                             ForEach(stats, id: \.category) { stat in
                                 ScoreCardView(
@@ -94,11 +98,21 @@ struct MyScoreBoardView: View {
                                 
                             }
                             if let total = viewModel.leaderboard?.grand_total_points {
-                                HStack(alignment: .center) {
+                                HStack {
                                     Spacer()
-                                    Text("Total Points: \(total)")
-                                        .font(.headline)
-                                        .foregroundColor(.black)
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "crown.fill")
+                                            .foregroundColor(.yellow)
+                                        
+                                        Text("Total Points:")
+                                            .font(.headline)
+                                            .foregroundColor(.black)
+                                        
+                                        Text("\(total)")
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color(UIColor(red: 80/255.0, green: 9/255.0, blue: 176/255.0, alpha: 1.0)))
+                                    }
                                     Spacer()
                                 }
                                 .padding()
@@ -107,11 +121,11 @@ struct MyScoreBoardView: View {
                                 .cornerRadius(10)
                             }
                         } else {
-                            Text("Loading...")
+                            Text("No Data Found...")
                         }
                     }// VStack
                     .onAppear {
-                        viewModel.fetchScoreCard(riderId: "2")
+                        viewModel.fetchScoreCard(riderId: "0")
                     }
                     .padding()
                     
