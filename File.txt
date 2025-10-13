@@ -1,0 +1,16 @@
+HStack(alignment: .center, spacing: 12) {
+    Image("profile_image") // Replace with your profile image asset name
+        .resizable()
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 60, height: 60)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+        .shadow(radius: 4)
+
+    Text("User Name") // Replace with actual user name
+        .font(.title3).bold()
+        .foregroundColor(.white)
+}
+.padding(10)
+.background(Color.blue)  // Replace with your desired color
+.cornerRadius(15)
