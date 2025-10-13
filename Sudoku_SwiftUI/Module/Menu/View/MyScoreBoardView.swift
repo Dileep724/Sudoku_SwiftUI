@@ -91,6 +91,7 @@ struct MyScoreBoardView: View {
                                     time: "\(stat.best_time) sec",
                                     score: "\(stat.total_points)"
                                 )
+                                
                             }
                             if let total = viewModel.leaderboard?.grand_total_points {
                                 HStack(alignment: .center) {
