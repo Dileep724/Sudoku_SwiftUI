@@ -14,9 +14,9 @@ struct SudokuGameView: View {
     
     var body: some View {
         ZStack {
-            Image(themeManager.selectedTheme.imageName)
+            themeManager.selectedTheme?.image?
                 .resizable()
-                .scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
             
             if viewModel.isLoading {
@@ -32,24 +32,24 @@ struct SudokuGameView: View {
                                 ToolButton(systemName: "arrow.uturn.backward")
                             }
                             .disabled(viewModel.remainingUndoLimit == 0)
-
+                            
                             Button(action: { viewModel.redo() }) {
                                 ToolButton(systemName: "arrow.uturn.forward")
                             }
                             .disabled(viewModel.remainingRedoLimit == 0)
-
+                            
                             Button(action: { viewModel.restartGame() }) {
                                 ToolButton(systemName: "gobackward")
                             }
-
+                            
                             Button(action: { viewModel.useHint() }) {
                                 ToolButton(systemName: "lightbulb")
                             }
                             .disabled(viewModel.remainingHintLimit == 0)
-
+                            
                             ToolButton(systemName: "pencil")
                         }
-
+                        
                         
                         Text(viewModel.puzzle?.category.description ?? "")
                             .font(.title)
@@ -60,7 +60,7 @@ struct SudokuGameView: View {
                             .cornerRadius(10)
                             .frame(maxWidth: .infinity)
                     }
-
+                    
                     SudokuBoardView(
                         viewModel: viewModel,
                         grid: viewModel.workingGrid,
@@ -71,14 +71,14 @@ struct SudokuGameView: View {
                         }
                     )
                     .padding(.horizontal, 50)
-
-
+                    
+                    
                     NumberPadView(viewModel: viewModel, onNumberTap: { number in
                         viewModel.insertNumber(number)
                     })
                     .padding(.top, 30)
-
-
+                    
+                    
                     Spacer()
                 }
                 .padding(.top, 50)
@@ -100,12 +100,12 @@ struct SudokuBoardView: View {
     let selectedRow: Int?
     let selectedCol: Int?
     let onCellTap: (Int, Int) -> Void
-
+    
     var selectedValue: Int? {
         guard let row = selectedRow, let col = selectedCol else { return nil }
         return grid[row][col] == 0 ? nil : grid[row][col]
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             ForEach(0..<9, id: \.self) { row in
@@ -117,7 +117,7 @@ struct SudokuBoardView: View {
                         let isSameCol = selectedCol == col
                         let isInSameBox = isInSame3x3Box(row1: row, col1: col, row2: selectedRow, col2: selectedCol)
                         let matchesSelectedValue = selectedValue != nil && selectedValue == value && value != 0
-
+                        
                         SudokuCell(
                             value: value,
                             isSelected: isSelected,
@@ -135,7 +135,7 @@ struct SudokuBoardView: View {
         .overlay(GridLines())
         .background(Color.white)
     }
-
+    
     func isInSame3x3Box(row1: Int, col1: Int, row2: Int?, col2: Int?) -> Bool {
         guard let row2 = row2, let col2 = col2 else { return false }
         return (row1 / 3 == row2 / 3) && (col1 / 3 == col2 / 3)
@@ -245,40 +245,40 @@ struct NumberPadView: View {
     
     let numbers = [
         [1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 0] 
+        [6, 7, 8, 9, 0]
     ]
     
     var body: some View {
-          VStack(spacing: 15) {
-              ForEach(0..<numbers.count, id: \.self) { row in
-                  HStack(spacing: 15) {
-                      ForEach(numbers[row], id: \.self) { number in
-                          Button(action: {
-                              onNumberTap(number)
-                          }) {
-                              if number == 0 {
-                                  Image(systemName: "delete.left")
-                                      .font(.title)
-                                      .foregroundColor(.white)
-                                      .frame(width: 65, height: 65)
-                                      .background(Color.black.opacity(0.5))
-                                      .cornerRadius(10)
-                              } else {
-                                  Text("\(number)")
-                                      .font(.title)
-                                      .foregroundColor(.white)
-                                      .frame(width: 65, height: 65)
-                                      .background(Color.black.opacity(0.5))
-                                      .cornerRadius(10)
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      }
-
-  }
+        VStack(spacing: 15) {
+            ForEach(0..<numbers.count, id: \.self) { row in
+                HStack(spacing: 15) {
+                    ForEach(numbers[row], id: \.self) { number in
+                        Button(action: {
+                            onNumberTap(number)
+                        }) {
+                            if number == 0 {
+                                Image(systemName: "delete.left")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                                    .frame(width: 65, height: 65)
+                                    .background(Color.black.opacity(0.5))
+                                    .cornerRadius(10)
+                            } else {
+                                Text("\(number)")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                                    .frame(width: 65, height: 65)
+                                    .background(Color.black.opacity(0.5))
+                                    .cornerRadius(10)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}
 
 
 struct ToolButton: View {
