@@ -20,4 +20,3 @@ struct Category_Status: Codable {
     let best_time: Int
     let total_points: Int
 }
-

@@ -6,20 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ThemesView: View {
     
     // MARK: - Properties
     
-    @StateObject var viewModel = ThemesViewModel()
+    @ObservedObject var viewModel: ThemesViewModel
     @ObservedObject var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
+    @State private var isLoading = true
     
     // MARK: - View
     
     var body: some View {
         ZStack {
-            Image(themeManager.selectedTheme.imageName)
+            themeManager.selectedTheme?.image?
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
@@ -49,42 +51,48 @@ struct ThemesView: View {
                             )
                             .cornerRadius(15)
                             
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 20) {
-                                    ForEach(viewModel.themes) { theme in
-                                        VStack(spacing: 8) {
-                                            Text(theme.name)
-                                                .font(.headline)
-                                                .foregroundColor(.black)
-                                            
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .fill(Color.white)
-                                                    .shadow(radius: 5)
-                                                    .frame(width: 150, height: 150)
+                            if isLoading {
+                                ProgressView()
+                                    .frame(height: 190)
+                            } else {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20) {
+                                        ForEach(viewModel.themes) { theme in
+                                            VStack(spacing: 8) {
+                                                Text(theme.name)
+                                                    .font(.headline)
+                                                    .foregroundColor(.black)
                                                 
-                                                Image(theme.imageName)
-                                                    .resizable()
-                                                    .scaledToFill()
-                                                    .frame(width: 150, height: 150)
-                                                    .clipped()
-                                                    .cornerRadius(12)
-                                                    .overlay(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .stroke(
-                                                                themeManager.selectedTheme == theme ? Color.black : Color.clear,
-                                                                lineWidth: 2
-                                                            )
-                                                    )
-                                            }// ZStack
-                                        }// VStack
-                                        .onTapGesture {
-                                            themeManager.selectedTheme = theme
+                                                ZStack {
+                                                    RoundedRectangle(cornerRadius: 15)
+                                                        .fill(Color.white)
+                                                        .shadow(radius: 5)
+                                                        .frame(width: 150, height: 150)
+                                                    
+                                                    theme.image?
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 150, height: 150)
+                                                        .clipped()
+                                                        .cornerRadius(12)
+                                                        .overlay(
+                                                            RoundedRectangle(cornerRadius: 12)
+                                                                .stroke(
+                                                                    themeManager.selectedTheme?.id == theme.id ? Color.black : Color.clear,
+                                                                    lineWidth: 2
+                                                                )
+                                                        )
+                                                }// ZStack
+                                            }// VStack
+                                            .onTapGesture {
+                                                themeManager.selectedTheme = theme
+                                            }
                                         }
                                     }
-                                }
-                                .padding(.horizontal, 15)
-                                .padding(.vertical, 20)
+                                    .padding(.horizontal, 15)
+                                    .padding(.vertical, 20)
+                                } // Scroll View
+                                .frame(height: 190)
                             }// Scroll View
                         }// ZStack
                         .frame(height: 190)
@@ -111,36 +119,42 @@ struct ThemesView: View {
                                 )
                                 .cornerRadius(15)
                                 
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 20) {
-                                        ForEach(viewModel.gridOptions) { option in
-                                            VStack(spacing: 8) {
-                                                Image(option.imageName)
-                                                    .resizable()
-                                                    .scaledToFill()
-                                                    .frame(width: 150, height: 150)
-                                                    .clipped()
-                                                    .cornerRadius(12)
-                                                    .shadow(radius: 5)
-                                                    .overlay(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .stroke(
-                                                                themeManager.selectedGridColor == option.color
-                                                                ? Color.black
-                                                                : Color.clear,
-                                                                lineWidth: 3
-                                                            )
-                                                    )
-                                            }// VStack
-                                            .onTapGesture {
-                                                withAnimation {
-                                                    viewModel.selectGridOption(option)
+                                if isLoading {
+                                    ProgressView()
+                                        .frame(height: 190)
+                                } else {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 20) {
+                                            ForEach(viewModel.gridOptions) { option in
+                                                VStack(spacing: 8) {
+                                                    option.image?
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 150, height: 150)
+                                                        .clipped()
+                                                        .cornerRadius(12)
+                                                        .shadow(radius: 5)
+                                                        .overlay(
+                                                            RoundedRectangle(cornerRadius: 12)
+                                                                .stroke(
+                                                                    themeManager.selectedGridColor == option.color
+                                                                    ? Color.black
+                                                                    : Color.clear,
+                                                                    lineWidth: 3
+                                                                )
+                                                        )
+                                                }// VStack
+                                                .onTapGesture {
+                                                    withAnimation {
+                                                        viewModel.selectGridOption(option)
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }// HStack
-                                    .padding(.horizontal, 15)
-                                    .padding(.vertical, 20)
+                                        }// HStack
+                                        .padding(.horizontal, 15)
+                                        .padding(.vertical, 20)
+                                    } // Scroll View
+                                    .frame(height: 190)
                                 } // Scroll View
                             }// ZStack
                             .frame(height: 190)
@@ -170,11 +184,20 @@ struct ThemesView: View {
                 Spacer()
             }// VStack
         }// ZStack
+        .onAppear {
+            viewModel.$themes
+                .filter { !$0.isEmpty }
+                .first()
+                .sink { _ in
+                    isLoading = false
+                }
+                .store(in: &viewModel.cancellables)
+        }
     }
 }
 
 // MARK: - Preview
 
 #Preview {
-    ThemesView()
+    ThemesView(viewModel: ThemesViewModel())
 }

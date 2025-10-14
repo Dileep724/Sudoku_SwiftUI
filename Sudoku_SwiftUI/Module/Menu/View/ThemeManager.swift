@@ -12,7 +12,7 @@ import Combine
 
 class ThemeManager: ObservableObject {
     static let shared = ThemeManager()
-    @Published var selectedTheme: Theme = Theme(name: "Bamboo Zen", imageName: "Bamboo Zen")
+    @Published var selectedTheme: Theme? = nil
     @Published var selectedGridColor: Color = .white
     private init() {}
 }
