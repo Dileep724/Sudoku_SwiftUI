@@ -20,10 +20,10 @@ struct MyScoreBoardView: View {
     
     var body: some View {
         ZStack {
-            Image(themeManager.selectedTheme.imageName)
-                .resizable()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
+            themeManager.selectedTheme?.image? 
+                            .resizable()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .ignoresSafeArea()
             
             VStack(spacing: 5) {
                 Text("MY SCORE BOARD")

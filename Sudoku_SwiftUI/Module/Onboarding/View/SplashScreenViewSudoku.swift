@@ -14,6 +14,7 @@ struct SplashScreenViewSudoku: View {
     // MARK: - Properties
     
     @StateObject private var viewModel = SplashScreenModel()
+    @StateObject var themesViewModel = ThemesViewModel()
     
     // MARK: - View
     
