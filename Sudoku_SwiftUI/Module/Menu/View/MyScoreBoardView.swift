@@ -35,7 +35,7 @@ struct MyScoreBoardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     
                     HStack(spacing: 10) {
-                        Image(systemName: "person.circle.fill")
+                        Image(uiImage: viewModel.profileImage ?? UIImage(systemName: "person.circle.fill")!)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 60, height: 60)
@@ -49,6 +49,9 @@ struct MyScoreBoardView: View {
                         Spacer()
                         
                     }// HStack
+                    .onAppear {
+                        viewModel.fetchProfileData()
+                    }
                     .padding([.leading, .trailing, .top, .bottom])
                     .background(Color(UIColor(red: 80/255.0, green: 9/255.0, blue: 176/255.0, alpha: 1.0)))
                     .mask(
@@ -125,7 +128,7 @@ struct MyScoreBoardView: View {
                         }
                     }// VStack
                     .onAppear {
-                        viewModel.fetchScoreCard(riderId: "0")
+                        viewModel.fetchScoreCard(riderId: "2")
                     }
                     .padding()
                     
