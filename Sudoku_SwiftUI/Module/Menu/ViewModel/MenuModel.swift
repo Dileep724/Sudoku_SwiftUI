@@ -12,14 +12,14 @@ import Combine
 class MenuModel: ObservableObject {
     
     // MARK: - Properties
-    
+    @Published var showDifficultyPopup = false
     @Published var goToStartGame = false
     @Published var goToTips = false
     @Published var goToThemes = false
     @Published var goToScoreBoard = false
     
     func moveToStartGame() {
-    
+        showDifficultyPopup = true
     }
     
     func moveToTips() {
