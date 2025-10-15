@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8080B3232E9FBF0C00640EE8 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 8080B3222E9FBF0C00640EE8 /* FSCalendar */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		80C8A7462E98D1D5008D7CC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8080B3232E9FBF0C00640EE8 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = Sudoku_SwiftUI;
 			packageProductDependencies = (
+				8080B3222E9FBF0C00640EE8 /* FSCalendar */,
 			);
 			productName = Sudoku_SwiftUI;
 			productReference = 80C8A7382E98D1D4008D7CC2 /* Sudoku_SwiftUI.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 80C8A72F2E98D1D4008D7CC2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8080B3212E9FBF0C00640EE8 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 80C8A7392E98D1D4008D7CC2 /* Products */;
 			projectDirPath = "";
@@ -586,6 +595,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8080B3212E9FBF0C00640EE8 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8080B3222E9FBF0C00640EE8 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8080B3212E9FBF0C00640EE8 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 80C8A7302E98D1D4008D7CC2 /* Project object */;
 }
