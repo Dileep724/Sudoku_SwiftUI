@@ -36,5 +36,41 @@ struct SudokuPuzzle: Codable {
         return (try? JSONDecoder().decode([[Int]].self, from: data)) ?? []
     }
 }
+struct TournamentPuzzleResponse: Decodable {
+    let tournament_id: Int?
+    let tournament_name: String?
+    let round_name: String?
+    let round_id: Int?
+    let round_number: Int?
+    let end_datetime: String?
+    let sudoku: TournamentSudokuPuzzle
 
+    struct TournamentSudokuPuzzle: Decodable {
+        let sudoku_id: Int
+        let puzzle: [[Int]]
+        let solution: [[Int]]
+        let category: String
+        let hint_limit: Int?
+        let undo_limit: Int
+        let redo_limit: Int
+    }
+}
+struct BasicResponse: Codable {
+    let status: String
+    let message: String
+}
 
+struct SudokuResultResponse: Codable {
+    let rider_id: String
+    let event_id: String
+    let negative_points: Int
+    let redo: Int
+    let undo: Int
+    let hint: Int
+    let total_points: Int
+    let submit_date: String
+    let time_taken: String
+    let category: String
+    let first_name: String
+    let last_name: String
+}
