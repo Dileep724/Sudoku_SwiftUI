@@ -9,46 +9,38 @@ import SwiftUI
 
 struct DifficultyPopupView: View {
     @Binding var isPresented: Bool
+    var onSelectLevel: (String) -> Void  // <-- new closure
     
     var body: some View {
         ZStack {
-            // Background dim layer
             Color.black.opacity(0)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation {
-                        isPresented = false
-                    }
+                    withAnimation { isPresented = false }
                 }
             
-            // Popup Card
             VStack(spacing: 16) {
-                
-                // Header with title and close button
                 HStack {
                     Text("Choose Difficulty")
                         .font(.headline)
                         .fontWeight(.semibold)
                     Spacer()
                     Button {
-                        withAnimation {
-                            isPresented = false
-                        }
+                        withAnimation { isPresented = false }
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(.gray)
                             .font(.system(size: 16, weight: .bold))
                     }
                 }
-                .padding(.bottom, 4)
                 
-                // Difficulty Buttons
                 VStack(spacing: 12) {
-                    DifficultyButton(title: "Beginner") { startGame(level: "Beginner") }
-                    DifficultyButton(title: "Easy") { startGame(level: "Easy") }
-                    DifficultyButton(title: "Medium") { startGame(level: "Medium") }
-                    DifficultyButton(title: "Hard") { startGame(level: "Hard") }
-                    DifficultyButton(title: "Expert") { startGame(level: "Expert") }
+                    ForEach(["beginner","easy","medium","hard","expert"], id: \.self) { level in
+                        DifficultyButton(title: level) {
+                            onSelectLevel(level) 
+                            withAnimation { isPresented = false }
+                        }
+                    }
                 }
             }
             .padding(20)
@@ -59,14 +51,6 @@ struct DifficultyPopupView: View {
         }
         .transition(.scale.combined(with: .opacity))
         .animation(.easeInOut, value: isPresented)
-    }
-    
-    // MARK: - Actions
-    func startGame(level: String) {
-        print("Selected difficulty: \(level)")
-        withAnimation {
-            isPresented = false
-        }
     }
 }
 
@@ -96,5 +80,9 @@ struct DifficultyButton: View {
 }
 
 #Preview {
-    DifficultyPopupView(isPresented: .constant(true))
+    DifficultyPopupView(isPresented: .constant(true)) { selectedLevel in
+        // For preview, you can just print the level or do nothing
+        print("Selected level: \(selectedLevel)")
+    }
 }
+

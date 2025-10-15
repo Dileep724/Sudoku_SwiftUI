@@ -17,6 +17,7 @@ class MenuModel: ObservableObject {
     @Published var goToTips = false
     @Published var goToThemes = false
     @Published var goToScoreBoard = false
+    @Published var selectedLevel: String = "Easy"
     
     func moveToStartGame() {
         showDifficultyPopup = true
