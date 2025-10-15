@@ -20,6 +20,7 @@ struct MenuView: View {
     
     var body: some View {
         ZStack {
+            // Background Theme
             themeManager.selectedTheme?.image?
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -48,16 +49,31 @@ struct MenuView: View {
                         viewModel.moveToMyScoreBoard()
                     }
                     .buttonStyle(MenuButtonStyle())
-                }// VStack
-                .padding(.horizontal, 40)
-                Spacer()
-                
-                NavigationLink(destination: MyScoreBoardView(), isActive: $viewModel.goToScoreBoard) {
-                    EmptyView()
                 }
-                .hidden()
-            }// VStack
- 
+                .padding(.horizontal, 40)
+                
+                Spacer()
+            }
+            
+            // Hidden NavigationLink for SudokuGameView
+            NavigationLink(
+                destination: SudokuGameView(level: viewModel.selectedLevel),
+                isActive: $viewModel.goToStartGame
+            ) {
+                EmptyView()
+            }
+            .hidden()
+            
+            // Hidden NavigationLink for ScoreBoard
+            NavigationLink(
+                destination: MyScoreBoardView(),
+                isActive: $viewModel.goToScoreBoard
+            ) {
+                EmptyView()
+            }
+            .hidden()
+            
+            // Difficulty Popup
             if viewModel.showDifficultyPopup {
                 Color.black.opacity(0)
                     .ignoresSafeArea()
@@ -67,12 +83,14 @@ struct MenuView: View {
                         }
                     }
                 
-                DifficultyPopupView(isPresented: $viewModel.showDifficultyPopup)
-                    .transition(.scale.combined(with: .opacity))
-                    .zIndex(1)
+                DifficultyPopupView(isPresented: $viewModel.showDifficultyPopup) { selectedLevel in
+                    viewModel.selectedLevel = selectedLevel
+                    viewModel.goToStartGame = true  // triggers navigation
+                }
+                .transition(.scale.combined(with: .opacity))
+                .zIndex(1)
             }
-        }// ZStack
-        
+        }
         .fullScreenCover(isPresented: $viewModel.goToThemes) {
             ThemesView(viewModel: ThemesViewModel())
         }
@@ -88,4 +106,3 @@ struct MenuView: View {
         MenuView()
     }
 }
-
