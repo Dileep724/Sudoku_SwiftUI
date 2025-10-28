@@ -258,6 +258,9 @@ struct PointsView: View {
             .hidden()
         }// ZStack
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $viewModel.showStreak) {
+            StreakView()
+        }
     }
 }
 
