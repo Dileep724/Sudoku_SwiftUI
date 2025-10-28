@@ -39,7 +39,10 @@ class SudokuGameViewModel: ObservableObject {
     @Published var undoCount: Int = 0
     @Published var redoCount: Int = 0
     @Published var wrongEntryCount: Int = 0
+    private var firstName = "sai"
+    private var lastName = "babu"
     private var timer: Timer?
+    private var riderID = "123456"
     
     func fetchSudokuPuzzle(category: String) {
         isLoading = true
@@ -88,32 +91,41 @@ class SudokuGameViewModel: ObservableObject {
         timer = nil
     }
     
-    func submitCurrentGame(riderID: Int,
-                           eventID: String,
-                           puzzleDate: String,
-                           difficulty: String,
-                           firstName: String,
-                           lastName: String,
-                           completion: @escaping (Bool) -> Void) {
+    func submitGame(difficulty: String) {
+        let (totalScore, _) = calculateTotalScore(forDifficulty: difficulty)
+        let totalPoints = totalScore
         
-        let (totalScore, timeBonus) = calculateTotalScore(forDifficulty: difficulty)
-        var totalPoints = totalScore
-//        let streakBonusApplied = applyStreakBonus(score: &totalPoints, puzzleDate: puzzleDate)
+        // Correct date format YYYY-MM-DD
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let puzzleDate = dateFormatter.string(from: Date())
         
+        // Correct time format HH:mm:ss
+        func formatTimeHHMMSS(seconds: Int) -> String {
+            let hrs = seconds / 3600
+            let mins = (seconds % 3600) / 60
+            let secs = seconds % 60
+            return String(format: "%02d:%02d:%02d", hrs, mins, secs)
+        }
+
+        let eventID = puzzle?.eventID ?? "Unknown"
         let body: [String: Any] = [
-            "rider_id": String(riderID),
+            "rider_id": riderID,
             "event_id": eventID,
-            "negative_points": wrongEntryCount * 1,
+            "negative_points": wrongEntryCount * 2,
             "redo": redoCount,
             "undo": undoCount,
             "hint": hintsUsed,
             "total_points": totalPoints,
             "submit_date": puzzleDate,
-            "time_taken": formatTimeForTournament(seconds: elapsedTime),
+            "time_taken": formatTimeHHMMSS(seconds: elapsedTime),
             "category": difficulty.capitalized,
             "first_name": firstName.capitalized,
             "last_name": lastName.capitalized
+
         ]
+        
+        print(body)
         
         NetworkManager.shared.request(
             urlString: "https://zdotapps.in/carelon/sudokuresults/",
@@ -126,22 +138,13 @@ class SudokuGameViewModel: ObservableObject {
                 switch result {
                 case .success(let response):
                     print("✅ Game submitted: \(response.message)")
-                    completion(true)
                 case .failure(let error):
                     print("❌ Submit failed: \(error)")
-                    completion(false)
                 }
             }
         }
     }
-    
-    
-    private func formatTimeForTournament(seconds: Int) -> String {
-        let minutes = seconds / 60
-        let secs = seconds % 60
-        return String(format: "%02d:%02d", minutes, secs)
-    }
-    
+
     
     func toggleNoteMode() {
         isNoteMode.toggle()

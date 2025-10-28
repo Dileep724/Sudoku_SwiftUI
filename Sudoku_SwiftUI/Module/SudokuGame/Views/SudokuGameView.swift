@@ -84,21 +84,8 @@ struct SudokuGameView: View {
                                     .cornerRadius(10)
                                     .frame(maxWidth: .infinity)
                                     .onTapGesture {
-//                                        viewModel.stopTimer()
-//                                        stopTimer()
-//                                          
-//                                           viewModel.submitCurrentGame(
-//                                               riderID: 12334,
-//                                               eventID: "",
-//                                               puzzleDate: puzzleDate,
-//                                               difficulty: selectedDifficulty,
-//                                               firstName: firstName,
-//                                               lastName: lastName
-//                                           ) { success in
-//                                               if success {
-//                                                   // navigate to points screen
-//                                               }
-//                                           }
+                                        viewModel.stopTimer()
+                                           viewModel.submitGame(difficulty: level)
                                        }
                             }
                             
