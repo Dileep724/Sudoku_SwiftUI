@@ -26,6 +26,7 @@ class PointsViewModel: ObservableObject {
     @Published var time: Int = 10
     @Published var bestTime: Int = 10
     @Published var exitToMainMenu: Bool = false
+    @Published var showStreak: Bool = false
     
     func newGame() {
         
@@ -36,7 +37,7 @@ class PointsViewModel: ObservableObject {
     }
     
     func streak() {
-        
+        showStreak = true
     }
     
     func share() {
